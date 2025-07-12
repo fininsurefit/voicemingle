@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VoiceMingle - Real Voice Chat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #fff;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px 25px 15px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .logo i {
+            font-size: 32px;
+            color: white;
+        }
+        
+        .app-name {
+            font-size: 26px;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tagline {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 5px;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 20px;
+        }
+        
+        .section-title {
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            font-size: 16px;
+            color: #ff7e5f;
+        }
+        
+        .language-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .language-btn {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px 5px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .language-btn:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+        
+        .language-btn.active {
+            background: white;
+            color: #ff7e5f;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-color: transparent;
+        }
+        
+        .random-option {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        
+        .random-option.active {
+            background: white;
+            color: #ff7e5f;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .random-option i {
+            font-size: 20px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .start-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            border: none;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 126, 95, 0.4);
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .start-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(255, 126, 95, 0.5);
+        }
+        
+        .start-btn:active {
+            transform: translateY(1px);
+        }
+        
+        .start-btn i {
+            margin-left: 8px;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .feature {
+            text-align: center;
+            color: white;
+            width: calc(50% - 4px);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px 5px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .feature i {
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto 8px;
+            color: #ff7e5f;
+        }
+        
+        .footer {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 11px;
+            padding: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+        }
+        
+        .screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            z-index: 10;
+            text-align: center;
+        }
+        
+        .screen.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .connecting-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .connecting-icon i {
+            font-size: 36px;
+            color: white;
+        }
+        
+        .connecting-text {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .gender-indicator {
+            color: #ff7e5f;
+            font-weight: 700;
+        }
+        
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .voice-chat-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .avatar i {
+            font-size: 50px;
+            color: white;
+        }
+        
+        .voice-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .wave-bar {
+            width: 6px;
+            height: 30px;
+            background: #ff7e5f;
+            margin: 0 3px;
+            border-radius: 3px;
+            animation: wave 1.2s ease-in-out infinite;
+        }
+        
+        .mic-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255, 126, 95, 0.4);
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .mic-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .mic-btn.active {
+            transform: scale(0.95);
+            box-shadow: 0 3px 8px rgba(255, 126, 95, 0.4);
+        }
+        
+        .mic-btn i {
+            font-size: 28px;
+            color: white;
+        }
+        
+        .timer {
+            font-size: 20px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 20px;
+            border-radius: 30px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            width: 100%;
+            max-width: 260px;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .action-btn i {
+            font-size: 18px;
+            color: white;
+        }
+        
+        .action-btn.report i {
+            color: #ff6b6b;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 126, 95, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(255, 126, 95, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 126, 95, 0); }
+        }
+        
+        @keyframes wave {
+            0%, 60%, 100% { transform: scaleY(0.3); }
+            30% { transform: scaleY(1); }
+        }
+        
+        .instructions {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 12px;
+        }
+        
+        .instructions h3 {
+            color: #ff7e5f;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        .instructions ul {
+            padding-left: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+        
+        .instructions li {
+            margin-bottom: 6px;
+        }
+        
+        .user-status {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 15px;
+        }
+        
+        .user-badge {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .user-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4da0ff, #5f86ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 5px;
+        }
+        
+        .user-icon.female {
+            background: linear-gradient(135deg, #ff7eb3, #ff758c);
+        }
+        
+        .user-icon i {
+            color: white;
+            font-size: 18px;
+        }
+        
+        .status-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .status-text.online {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+        
+        .status-text.offline {
+            color: #f44336;
+        }
+        
+        .retry-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .retry-text {
+            color: #ff6b6b;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .permission-error {
+            color: #ff6b6b;
+            font-weight: 600;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+        
+        .audio-visualizer {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .visualizer-bar {
+            width: 8px;
+            height: 10px;
+            background: #ff7e5f;
+            margin: 0 3px;
+            border-radius: 4px;
+            transition: height 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-comments"></i>
+            </div>
+            <h1 class="app-name">VoiceMingle</h1>
+            <p class="tagline">Real Voice Chat with Strangers</p>
+        </div>
+        
+        <div class="content">
+            <div class="user-status">
+                <div class="user-badge">
+                    <div class="user-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="status-text online">You: Online</div>
+                </div>
+                <div class="user-badge">
+                    <div class="user-icon female">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="status-text offline" id="partnerStatus">Partner: Offline</div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">
+                    <i class="fas fa-globe-asia"></i>
+                    Select Language
+                </div>
+                <div class="language-grid" id="languageGrid">
+                    <div class="language-btn" data-lang="en">English</div>
+                    <div class="language-btn active" data-lang="hi">हिंदी</div>
+                    <div class="language-btn" data-lang="es">Español</div>
+                    <div class="language-btn" data-lang="fr">Français</div>
+                    <div class="language-btn" data-lang="ar">عربي</div>
+                    <div class="language-btn" data-lang="zh">中文</div>
+                </div>
+            </div>
+            
+            <div class="random-option active">
+                <i class="fas fa-random"></i>
+                <div>Connect Randomly</div>
+            </div>
+            
+            <button class="start-btn" id="startBtn">
+                Start Voice Chat <i class="fas fa-microphone"></i>
+            </button>
+            
+            <div class="permission-error" id="permissionError">
+                <i class="fas fa-exclamation-circle"></i> Microphone access required for voice chat
+            </div>
+            
+            <div class="features">
+                <div class="feature">
+                    <i class="fas fa-microphone-alt"></i>
+                    <span>Real Voice</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-user-secret"></i>
+                    <span>Anonymous</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-globe"></i>
+                    <span>Global</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-users"></i>
+                    <span>Multi-User</span>
+                </div>
+            </div>
+            
+            <div class="instructions">
+                <h3>How to Use VoiceMingle</h3>
+                <ul>
+                    <li>Allow microphone access when prompted</li>
+                    <li>Click "Start Voice Chat" to begin</li>
+                    <li>Hold the microphone button to talk</li>
+                    <li>Release to listen to your partner</li>
+                    <li>Use the buttons to control the call</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Web App | Real Voice Chat Experience
+        </div>
+        
+        <!-- Connecting Screen -->
+        <div class="screen" id="connectingScreen">
+            <div class="audio-visualizer" id="audioVisualizer">
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+                <div class="visualizer-bar"></div>
+            </div>
+            
+            <div class="connecting-text">
+                Searching for online users...
+            </div>
+            
+            <div class="connecting-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            
+            <p style="color: rgba(255, 255, 255, 0.7); text-align: center; max-width: 300px; margin-bottom: 15px; font-size: 14px;">
+                Currently <span id="onlineCount" style="color: white; font-weight: 500;">1</span> user online
+            </p>
+            
+            <div class="user-status">
+                <div class="user-badge">
+                    <div class="user-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="status-text online">You</div>
+                </div>
+                <div class="user-badge">
+                    <div class="user-icon female">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="status-text offline" id="searchPartnerStatus">Searching...</div>
+                </div>
+            </div>
+            
+            <button class="btn" id="cancelBtn">
+                Cancel Search
+            </button>
+        </div>
+        
+        <!-- Connection Failed Screen -->
+        <div class="screen" id="connectionFailedScreen">
+            <div class="connecting-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            
+            <div class="connecting-text">
+                Connection Failed
+            </div>
+            
+            <p style="color: rgba(255, 255, 255, 0.7); text-align: center; max-width: 300px; margin-bottom: 20px; font-size: 14px;">
+                Only one user is currently online. Please try again later.
+            </p>
+            
+            <div class="retry-container">
+                <div class="retry-text">
+                    <i class="fas fa-info-circle"></i> Try again when more users are online
+                </div>
+                <button class="btn btn-primary" id="retryBtn">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        </div>
+        
+        <!-- Voice Chat Screen -->
+        <div class="screen" id="voiceChatScreen">
+            <div class="voice-chat-container">
+                <div class="avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                
+                <div class="connecting-text">
+                    Talking with a 
+                    <span class="gender-indicator" id="connectedGender">random stranger</span>
+                </div>
+                
+                <div class="timer" id="timer">
+                    00:00
+                </div>
+                
+                <div class="audio-visualizer" id="callVisualizer">
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                    <div class="visualizer-bar"></div>
+                </div>
+                
+                <div class="mic-btn" id="micBtn">
+                    <i class="fas fa-microphone"></i>
+                </div>
+                
+                <div class="action-buttons">
+                    <div class="action-btn" id="muteBtn" title="Mute">
+                        <i class="fas fa-volume-mute"></i>
+                    </div>
+                    <div class="action-btn report" id="reportBtn" title="Report">
+                        <i class="fas fa-flag"></i>
+                    </div>
+                    <div class="action-btn" id="endCallBtn" title="End Call">
+                        <i class="fas fa-phone-slash"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const languageButtons = document.querySelectorAll('.language-btn');
+            const connectedGender = document.getElementById('connectedGender');
+            const startBtn = document.getElementById('startBtn');
+            const connectingScreen = document.getElementById('connectingScreen');
+            const connectionFailedScreen = document.getElementById('connectionFailedScreen');
+            const voiceChatScreen = document.getElementById('voiceChatScreen');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const retryBtn = document.getElementById('retryBtn');
+            const micBtn = document.getElementById('micBtn');
+            const endCallBtn = document.getElementById('endCallBtn');
+            const muteBtn = document.getElementById('muteBtn');
+            const reportBtn = document.getElementById('reportBtn');
+            const timer = document.getElementById('timer');
+            const onlineCount = document.getElementById('onlineCount');
+            const partnerStatus = document.getElementById('partnerStatus');
+            const searchPartnerStatus = document.getElementById('searchPartnerStatus');
+            const permissionError = document.getElementById('permissionError');
+            const audioVisualizer = document.getElementById('audioVisualizer');
+            const callVisualizer = document.getElementById('callVisualizer');
+            
+            // Audio elements
+            let audioContext;
+            let analyser;
+            let microphone;
+            let mediaStream;
+            let audioBuffer;
+            let audioSource;
+            let isTalking = false;
+            let audioDataArray;
+            
+            // State
+            let currentLanguage = 'hi';
+            let callActive = false;
+            let seconds = 0;
+            let timerInterval;
+            let muted = false;
+            let onlineUsers = 1;
+            let searchTimeout;
+            let animationFrameId;
+            
+            // Initialize audio context
+            function initAudio() {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    analyser = audioContext.createAnalyser();
+                    analyser.fftSize = 32;
+                    
+                    const bufferLength = analyser.frequencyBinCount;
+                    audioDataArray = new Uint8Array(bufferLength);
+                    
+                    // Start visualizer animation
+                    visualizeAudio();
+                    
+                    return true;
+                } catch (e) {
+                    console.error("Audio context error:", e);
+                    showPermissionError();
+                    return false;
+                }
+            }
+            
+            // Visualize audio input
+            function visualizeAudio() {
+                if (!analyser) return;
+                
+                analyser.getByteFrequencyData(audioDataArray);
+                
+                const visualizerBars = callVisualizer.querySelectorAll('.visualizer-bar');
+                visualizerBars.forEach((bar, i) => {
+                    const index = i % audioDataArray.length;
+                    const height = (audioDataArray[index] / 255) * 60;
+                    bar.style.height = `${Math.max(10, height)}px`;
+                    bar.style.background = `hsl(${200 + (height * 0.5)}, 100%, 50%)`;
+                });
+                
+                animationFrameId = requestAnimationFrame(visualizeAudio);
+            }
+            
+            // Show permission error
+            function showPermissionError() {
+                permissionError.style.display = 'block';
+            }
+            
+            // Get microphone access
+            async function getMicrophone() {
+                try {
+                    mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    microphone = audioContext.createMediaStreamSource(mediaStream);
+                    microphone.connect(analyser);
+                    return true;
+                } catch (err) {
+                    console.error("Microphone access error:", err);
+                    showPermissionError();
+                    return false;
+                }
+            }
+            
+            // Play simulated partner audio
+            async function playPartnerAudio() {
+                try {
+                    // Create oscillator as simulated partner voice
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.value = 200 + Math.random() * 200;
+                    gainNode.gain.value = 0;
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+                    
+                    oscillator.start();
+                    
+                    // Simulate partner talking randomly
+                    setInterval(() => {
+                        if (!isTalking && Math.random() > 0.7) {
+                            gainNode.gain.value = 0.3;
+                            setTimeout(() => {
+                                gainNode.gain.value = 0;
+                            }, 1000 + Math.random() * 2000);
+                        }
+                    }, 3000);
+                    
+                } catch (e) {
+                    console.error("Audio playback error:", e);
+                }
+            }
+            
+            // Language selection
+            languageButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    languageButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentLanguage = this.getAttribute('data-lang');
+                });
+            });
+            
+            // Start button functionality
+            startBtn.addEventListener('click', async function() {
+                // Initialize audio
+                if (!audioContext && !initAudio()) return;
+                
+                // Get microphone access
+                if (!mediaStream && !(await getMicrophone())) return;
+                
+                // Show connecting screen
+                connectingScreen.classList.add('active');
+                onlineCount.textContent = onlineUsers;
+                
+                // Simulate searching for users
+                searchPartnerStatus.textContent = "Searching...";
+                searchPartnerStatus.classList.remove("online");
+                
+                // Simulate connection process
+                searchTimeout = setTimeout(checkOnlineUsers, 3000);
+            });
+            
+            // Check if there are enough online users
+            function checkOnlineUsers() {
+                // For demo: Randomly set online users (1-3)
+                onlineUsers = 1 + Math.floor(Math.random() * 2);
+                onlineCount.textContent = onlineUsers;
+                
+                if(onlineUsers >= 2) {
+                    // Partner found
+                    searchPartnerStatus.textContent = "Connected!";
+                    searchPartnerStatus.classList.add("online");
+                    
+                    // Proceed to connection
+                    setTimeout(connectToStranger, 1500);
+                } else {
+                    // Not enough users
+                    connectingScreen.classList.remove('active');
+                    connectionFailedScreen.classList.add('active');
+                }
+            }
+            
+            // Cancel button functionality
+            cancelBtn.addEventListener('click', function() {
+                clearTimeout(searchTimeout);
+                connectingScreen.classList.remove('active');
+            });
+            
+            // Retry button functionality
+            retryBtn.addEventListener('click', function() {
+                connectionFailedScreen.classList.remove('active');
+                startBtn.click();
+            });
+            
+            // Simulate connection to stranger
+            async function connectToStranger() {
+                // Hide connecting screen
+                connectingScreen.classList.remove('active');
+                
+                // Set partner status
+                partnerStatus.textContent = "Partner: Online";
+                partnerStatus.classList.add("online");
+                
+                // Set random gender for the stranger
+                const genders = ['male', 'female'];
+                const connected = genders[Math.floor(Math.random() * genders.length)];
+                connectedGender.textContent = connected;
+                
+                // Set avatar color based on gender
+                const avatar = document.querySelector('.avatar');
+                if (connected === 'male') {
+                    avatar.style.background = 'linear-gradient(135deg, #4da0ff, #5f86ff)';
+                } else {
+                    avatar.style.background = 'linear-gradient(135deg, #ff7eb3, #ff758c)';
+                }
+                
+                // Play simulated partner audio
+                await playPartnerAudio();
+                
+                // Show voice chat screen
+                voiceChatScreen.classList.add('active');
+                callActive = true;
+                
+                // Start timer
+                seconds = 0;
+                startTimer();
+            }
+            
+            // Start timer for call
+            function startTimer() {
+                clearInterval(timerInterval);
+                timerInterval = setInterval(() => {
+                    seconds++;
+                    const mins = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    timer.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                }, 1000);
+            }
+            
+            // Microphone button functionality
+            micBtn.addEventListener('mousedown', function() {
+                if (!callActive) return;
+                this.classList.add('active');
+                isTalking = true;
+            });
+            
+            micBtn.addEventListener('mouseup', function() {
+                if (!callActive) return;
+                this.classList.remove('active');
+                isTalking = false;
+            });
+            
+            micBtn.addEventListener('mouseleave', function() {
+                if (!callActive) return;
+                this.classList.remove('active');
+                isTalking = false;
+            });
+            
+            // End call button
+            endCallBtn.addEventListener('click', function() {
+                voiceChatScreen.classList.remove('active');
+                callActive = false;
+                clearInterval(timerInterval);
+                cancelAnimationFrame(animationFrameId);
+                
+                // Reset partner status
+                partnerStatus.textContent = "Partner: Offline";
+                partnerStatus.classList.remove("online");
+                
+                // Stop microphone
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                    mediaStream = null;
+                }
+            });
+            
+            // Mute button
+            muteBtn.addEventListener('click', function() {
+                muted = !muted;
+                this.querySelector('i').classList.toggle('fa-volume-mute');
+                this.querySelector('i').classList.toggle('fa-volume-up');
+                
+                if (muted) {
+                    this.style.background = 'rgba(255, 95, 95, 0.2)';
+                    if (microphone) microphone.disconnect();
+                } else {
+                    this.style.background = 'rgba(255, 255, 255, 0.1)';
+                    if (microphone) microphone.connect(analyser);
+                }
+            });
+            
+            // Report button
+            reportBtn.addEventListener('click', function() {
+                alert('User reported. Our team will review this conversation.');
+            });
+        });
+    </script>
+</body>
+</html>
